@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
 import { currentUserRouter } from "./routes/current-user";
@@ -7,6 +7,8 @@ import { signOutRouter } from "./routes/sign-out";
 import { signUpRouter } from "./routes/sign-up";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
+import mongoose from "mongoose";
+import { DatabaseConnectionError } from "./errors/database-connection-error";
 
 const app = express();
 
@@ -26,6 +28,18 @@ app.all('*', () => {
 // middlewares
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log('Auth listening on port 3000');
-});
+const startUp = () => {
+  try {
+    mongoose.connect('mongodb://auth-mongo-ip-service:27017/auth');
+    console.log('Connected to auth db');
+  } catch (e) {
+    console.log('error: ', e)
+    throw new DatabaseConnectionError();
+  }
+
+  app.listen(3000, () => {
+    console.log('Auth listening on port 3000');
+  });
+}
+
+startUp();
