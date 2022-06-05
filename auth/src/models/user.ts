@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { Password } from "../utils/password";
+import mongoose from 'mongoose';
+import { Password } from '../utils/password';
 
 interface UserProps {
   email: string;

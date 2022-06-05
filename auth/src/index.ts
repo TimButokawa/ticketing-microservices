@@ -1,14 +1,14 @@
-import express from "express";
-import "express-async-errors";
-import { json } from "body-parser";
-import { currentUserRouter } from "./routes/current-user";
-import { signInRouter } from "./routes/sign-in";
-import { signOutRouter } from "./routes/sign-out";
-import { signUpRouter } from "./routes/sign-up";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
-import mongoose from "mongoose";
-import { DatabaseConnectionError } from "./errors/database-connection-error";
+import { json } from 'body-parser';
+import express from 'express';
+import 'express-async-errors';
+import mongoose from 'mongoose';
+import { DatabaseConnectionError } from './errors/database-connection-error';
+import { NotFoundError } from './errors/not-found-error';
+import { errorHandler } from './middlewares/error-handler';
+import { currentUserRouter } from './routes/current-user';
+import { signInRouter } from './routes/sign-in';
+import { signOutRouter } from './routes/sign-out';
+import { signUpRouter } from './routes/sign-up';
 
 const app = express();
 
