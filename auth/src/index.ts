@@ -1,4 +1,5 @@
 import { json } from 'body-parser';
+import cookieSession from 'cookie-session';
 import express from 'express';
 import 'express-async-errors';
 import mongoose from 'mongoose';
@@ -12,7 +13,14 @@ import { signUpRouter } from './routes/sign-up';
 
 const app = express();
 
+// trust traffic from nginx
+app.set('trust proxy', true);
+
 app.use(json());
+app.use(cookieSession({
+  signed: false,
+  secure: true,
+}));
 
 // routes
 app.use(currentUserRouter);
@@ -29,6 +37,10 @@ app.all('*', () => {
 app.use(errorHandler);
 
 const startUp = () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY must be defined');
+  }
+
   try {
     mongoose.connect('mongodb://auth-mongo-ip-service:27017/auth');
     console.log('Connected to auth db');
