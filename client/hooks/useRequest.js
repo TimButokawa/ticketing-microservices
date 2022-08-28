@@ -5,6 +5,7 @@ const useRequest = ({
   body,
   method,
   url,
+  onSuccess,
 }) => {
   const [errors, setErrors] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -15,6 +16,10 @@ const useRequest = ({
     try  {
       const res = await axios[method](url, body);
       setLoading(false);
+      if (!!onSuccess) {
+        onSuccess(res.data);
+        return;
+      }
       return res.data;
     } catch(e) {
       setLoading(false);

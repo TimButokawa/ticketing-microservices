@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import Router from 'next/router';
 import useRequest from '../../hooks/useRequest';
 
 const SignUp = () => {
@@ -12,12 +12,13 @@ const SignUp = () => {
   } = useRequest({
     method: 'post',
     url: '/api/users/sign-up',
-    body: { email, password }
+    body: { email, password },
+    onSuccess: () => Router.push('/'),
   });
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    await doRequest();
+    doRequest();
   };
 
   return (
