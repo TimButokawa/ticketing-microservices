@@ -1,5 +1,14 @@
-const Home = () => {
-  return <h1>home</h1>;
+const LandingPage = ({ currentUser }) => {
+  return (
+    <h1>
+      {!!currentUser
+        ? 'You are signed in.'
+        : 'You are not signed in.'
+      }
+    </h1>
+  );
 }
 
-export default Home;
+LandingPage.getInitialProps = async (ctx) => {}
+
+export default LandingPage;
