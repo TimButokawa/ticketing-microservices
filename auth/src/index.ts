@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose';
-import { DatabaseConnectionError } from './errors/database-connection-error';
+import { DatabaseConnectionError } from '@tbticketsplease/common';
 import { app } from './app';
 
 const startUp = () => {
