@@ -3,11 +3,11 @@ import buildClient from '../api/build-client';
 import Header from '../components/header';
 
 // App component next js wrapper
-const AppComponent = ({ Component, currentUser, pageProps }) => {
+const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
       <Header currentUser={currentUser} />
-      <Component {...pageProps} />
+      <Component {...pageProps} currentUser={currentUser} />
     </div>
   );
 }
