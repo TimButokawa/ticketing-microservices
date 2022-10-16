@@ -8,8 +8,12 @@ const startUp = () => {
     throw new Error('JWT_KEY must be defined');
   }
 
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI must be defined');
+  }
+
   try {
-    mongoose.connect('mongodb://auth-mongo-ip-service:27017/auth'); // TODO: update
+    mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to auth db');
   } catch (e) {
     console.log('error: ', e)
