@@ -2,7 +2,11 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import express from 'express';
 import 'express-async-errors';
-import { NotFoundError, errorHandler } from '@tbticketsplease/common';
+import { NotFoundError, errorHandler, currentUser } from '@tbticketsplease/common';
+import { createTicketRouter } from './routes/new-ticket';
+import { getTicketRouter } from './routes/get-ticket';
+import { getTicketsRouter} from './routes/get-tickets';
+import { updateTicketRouter } from './routes/update-ticket';
 
 const app = express();
 
@@ -15,7 +19,14 @@ app.use(cookieSession({
   secure: process.env.NODE_ENV !== 'test',
 }));
 
+// middleware
+app.use(currentUser);
+
 // routes
+app.use(createTicketRouter);
+app.use(getTicketRouter);
+app.use(getTicketsRouter);
+app.use(updateTicketRouter);
 
 // handle undefined routes
 app.all('*', () => {
