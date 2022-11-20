@@ -1,6 +1,8 @@
 import { BadRequestError, NotFoundError, OrderStatus, requireAuth } from '@tbticketsplease/common';
 import express, { Request, Response } from 'express';
+import { OrderCanceledPublisher } from '../events/publishers/order-canceled-publisher';
 import { Order } from '../models/order';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -28,7 +30,13 @@ router.delete('/api/orders/:orderId',
 
     await order.save();
 
-    // TODO: publish an event for order created
+    // publish order:canceled
+    new OrderCanceledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      }
+    });
 
     res.status(200).send(order);
   }
