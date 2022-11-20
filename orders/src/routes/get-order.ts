@@ -1,4 +1,4 @@
-import { BadRequestError, NotAuthorizedError, NotFoundError, requireAuth } from '@tbticketsplease/common';
+import { BadRequestError, NotFoundError, requireAuth } from '@tbticketsplease/common';
 import express, { Request, Response } from 'express';
 import { Order } from '../models/order';
 
