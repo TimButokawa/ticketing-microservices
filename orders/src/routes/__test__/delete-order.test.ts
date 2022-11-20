@@ -4,7 +4,7 @@ import { Ticket } from '../../models/ticket';
 import { OrderStatus } from '../../models/order';
 
 describe('Canceling an order...', () => {
-  it('changes order status to "cancelled"', async () => {
+  it('changes order status to "canceled"', async () => {
     const ticket = Ticket.build({
       title: 'concert',
       price: 20,
@@ -29,6 +29,32 @@ describe('Canceling an order...', () => {
 
     expect(order.status).toEqual(OrderStatus.Created);
     expect(updatedOrder.status).toEqual(OrderStatus.Canceled);
+  });
+
+  it('does not cancel orders for other users', async () => {
+    const ticket = Ticket.build({
+      title: 'concert',
+      price: 20,
+      version: 1,
+    });
+
+    await ticket.save();
+
+    const user = global.signin();
+    const user2 = global.signin();
+
+    const { body: order } = await request(app)
+      .post('/api/orders')
+      .set('Cookie', user)
+      .send({ ticketId: ticket.id })
+      .expect(201);
+
+    await request(app)
+      .delete(`/api/orders/${order.id}`)
+      .set('Cookie', user2)
+      .send()
+      .expect(404);
+
   });
 
   // TODO: test emit order:canceled event
