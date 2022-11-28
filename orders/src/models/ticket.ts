@@ -3,6 +3,7 @@ import { Order, OrderStatus } from './order';
 
 // required to create
 interface TicketProps {
+  id: string;
   title: string;
   price: number;
   version: number;
@@ -45,7 +46,10 @@ const ticketSchema = new mongoose.Schema({
 });
 
 ticketSchema.statics.build = (props: TicketProps) => {
-  return new Ticket(props);
+  return new Ticket({
+    ...props,
+    _id: props.id,
+  });
 }
 
 // mongoos requires keyword function
