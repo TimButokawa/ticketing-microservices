@@ -1,10 +1,12 @@
-import { NotFoundError } from '@tbticketsplease/common';
+import { NotFoundError, requireAuth } from '@tbticketsplease/common';
 import express, { Request, Response } from 'express';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
 
-router.get('/api/tickets/:id', async (req: Request, res: Response) => {
+router.get('/api/tickets/:id',
+  requireAuth,
+  async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.params.id);
 
     if (!ticket) {
