@@ -30,7 +30,7 @@ app.all('*', () => {
   throw new NotFoundError();
 });
 
-// middlewares
+// handle errors
 app.use(errorHandler);
 
 export { app };
