@@ -14,7 +14,6 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
       id,
       title,
       price,
-      version: 0 // TODO: versioning
     });
 
     await ticket.save();

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../../app';
 import { OrderStatus } from '../../models/order';
@@ -7,9 +8,9 @@ import { natsWrapper } from '../../nats-wrapper';
 describe('Canceling an order...', () => {
   it('changes order status to "canceled"', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: 'concert',
       price: 20,
-      version: 1,
     });
 
     await ticket.save();
@@ -34,9 +35,9 @@ describe('Canceling an order...', () => {
 
   it('does not cancel orders for other users', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: 'concert',
       price: 20,
-      version: 1,
     });
 
     await ticket.save();
@@ -60,9 +61,9 @@ describe('Canceling an order...', () => {
 
   it('publishes an order:canceled event', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: 'concert',
       price: 20,
-      version: 1,
     });
 
     await ticket.save();
@@ -75,7 +76,7 @@ describe('Canceling an order...', () => {
       .send({ ticketId: ticket.id })
       .expect(201);
 
-    const { body: updatedOrder } = await request(app)
+    await request(app)
       .delete(`/api/orders/${order.id}`)
       .set('Cookie', user)
       .send()

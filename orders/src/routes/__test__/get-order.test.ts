@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
@@ -5,9 +6,9 @@ import { Ticket } from '../../models/ticket';
 describe('Getting an order by id...', () => {
   it('gets an order', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: 'concert',
       price: 20,
-      version: 1,
     });
 
     await ticket.save();
@@ -30,9 +31,9 @@ describe('Getting an order by id...', () => {
 
   it('does not get orders for other users', async () => {
     const ticket = Ticket.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: 'concert',
       price: 20,
-      version: 1,
     });
 
     await ticket.save();

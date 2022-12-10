@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { Order, OrderStatus } from './order';
 
 // required to create
@@ -6,7 +7,6 @@ interface TicketProps {
   id: string;
   title: string;
   price: number;
-  version: number;
 }
 
 // on the document
@@ -19,6 +19,7 @@ export interface TicketDocument extends mongoose.Document {
 
 interface TicketModel extends mongoose.Model<TicketDocument> {
   build(props: TicketProps): TicketDocument;
+  findByPrevVersion(event: { id: string, version: number }): Promise<TicketDocument | null>;
 }
 
 const ticketSchema = new mongoose.Schema({
@@ -30,10 +31,6 @@ const ticketSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 0
-  },
-  version: {
-    type: Number,
-    required: true,
   }
 }, {
   toJSON: {
@@ -41,9 +38,18 @@ const ticketSchema = new mongoose.Schema({
       ret.id = ret._id;
       delete ret._id;
     },
-    versionKey: false,
   }
 });
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
+
+ticketSchema.statics.findByPrevVersion = (event: { id: string, version: number }) => {
+  return Ticket.findOne({
+    __id: event.id,
+    version: event.version - 1,
+  });
+}
 
 ticketSchema.statics.build = (props: TicketProps) => {
   return new Ticket({
