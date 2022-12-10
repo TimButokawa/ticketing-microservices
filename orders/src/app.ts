@@ -21,7 +21,6 @@ app.use(cookieSession({
 
 // middleware
 app.use(currentUser);
-app.use(errorHandler);
 
 // routes
 app.use(deleteOrderRouter);
@@ -33,5 +32,8 @@ app.use(newOrderRouter);
 app.all('*', () => {
   throw new NotFoundError();
 });
+
+// handle errors
+app.use(errorHandler);
 
 export { app };
