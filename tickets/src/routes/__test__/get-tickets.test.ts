@@ -19,6 +19,7 @@ it('can fetch a list of tickets', async () => {
 
   const response = await request(app)
     .get('/api/tickets')
+    .set('Cookie', global.signin())
     .send()
     .expect(200);
 

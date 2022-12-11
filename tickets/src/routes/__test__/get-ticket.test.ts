@@ -6,6 +6,7 @@ it('returns 404 if the ticket is not found', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   const resp = await request(app)
     .get(`/api/tickets/${id}`)
+    .set('Cookie', global.signin())
     .send()
     .expect(404);
 });
@@ -25,6 +26,7 @@ it('returns the ticket', async () => {
   
   const ticket = await request(app)
     .get(`/api/tickets/${response.body.id}`)
+    .set('Cookie', global.signin())
     .send()
     .expect(200);
 

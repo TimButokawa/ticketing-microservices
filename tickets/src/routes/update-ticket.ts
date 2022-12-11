@@ -1,4 +1,4 @@
-import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@tbticketsplease/common';
+import { BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@tbticketsplease/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
@@ -25,6 +25,10 @@ router.put('/api/tickets/:id',
 
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
+    }
+
+    if (!!ticket.orderId) {
+      throw new BadRequestError('This ticket is currently reserved');
     }
 
     ticket.set({

@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '@tbticketsplease/common';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCanceledListener } from './events/listeners/order-canceled-listener';
 
 const startUp = async () => {
   if (!process.env.JWT_KEY) {
@@ -34,6 +36,9 @@ const startUp = async () => {
       console.log('NATS connection closing...');
       process.exit();
     });
+
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCanceledListener(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
