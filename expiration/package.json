@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tbticketsplease/common": "^1.8.0",
+    "@tbticketsplease/common": "^1.10.0",
     "@types/bull": "^4.10.0",
     "bull": "^4.10.2",
     "node-nats-streaming": "^0.3.2",
