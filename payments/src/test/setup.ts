@@ -3,7 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 declare global {
-  var signin: () => string[];
+  var signin: (id?: string) => string[];
 }
 
 jest.mock('../nats-wrapper.ts');
@@ -35,12 +35,11 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = () => {
-  // create new id each time signin is used
-  const id = new mongoose.Types.ObjectId().toHexString();
+global.signin = (id?: string) => {
   // build JWT payload { id, email }
   const payload = {
-    id,
+    // create new id if no id is provided each time signin is used
+    id: !!id ? id : new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com'
   };
   // create JWT

@@ -1,8 +1,9 @@
+import { currentUser, errorHandler, NotFoundError } from '@tbticketsplease/common';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import express from 'express';
 import 'express-async-errors';
-import { NotFoundError, errorHandler, currentUser } from '@tbticketsplease/common';
+import { newPaymentRouter } from './routes/new-payment';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieSession({
 app.use(currentUser);
 
 // routes
+app.use(newPaymentRouter);
 
 // handle undefined routes
 app.all('*', () => {
