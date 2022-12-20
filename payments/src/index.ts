@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '@tbticketsplease/common';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { OrderCancledListener } from './events/listeners/order-canceled-listener';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
 
 const startUp = async () => {
   if (!process.env.JWT_KEY) {
@@ -37,6 +39,9 @@ const startUp = async () => {
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    new OrderCancledListener(natsWrapper.client).listen();
+    new OrderCreatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to auth db');
