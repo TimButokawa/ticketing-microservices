@@ -10,11 +10,11 @@ const useRequest = ({
   const [errors, setErrors] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
-  const doRequest = React.useCallback(async () => {
+  const doRequest = React.useCallback(async (props = {}) => {
     setLoading(true);
     setErrors([]);
     try  {
-      const res = await axios[method](url, body);
+      const res = await axios[method](url, {...body, ...props });
       setLoading(false);
       if (!!onSuccess) {
         onSuccess(res.data);
