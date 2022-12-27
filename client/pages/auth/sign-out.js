@@ -9,7 +9,7 @@ const SignOut = () => {
     method: 'post',
     url: '/api/users/sign-out',
     body: {},
-    onSuccess: () => Router.push('/'),
+    onSuccess: () => Router.push('/auth/sign-in'),
   });
 
   React.useEffect(() => {

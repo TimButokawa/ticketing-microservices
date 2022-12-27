@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import useRequest from '../../hooks/useRequest';
 
-const SignUp = () => {
+const SignUp = ({ currentUser }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const {
@@ -20,6 +20,12 @@ const SignUp = () => {
     e.preventDefault();
     doRequest();
   };
+
+  React.useEffect(() => {
+    if (!!currentUser) {
+      Router.push('/');
+    }
+  }, [currentUser]);
 
   return (
     <form onSubmit={handleOnSubmit}>

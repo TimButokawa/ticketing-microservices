@@ -1,13 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.css'; // setup global css
 import buildClient from '../api/build-client';
 import Header from '../components/header';
+import Protected from '../components/protected';
 
 // App component next js wrapper
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
       <Header currentUser={currentUser} />
-      <Component {...pageProps} currentUser={currentUser} />
+      <div className="container">
+        <Protected currentUser={currentUser}>
+          <Component {...pageProps} currentUser={currentUser} />
+        </Protected>
+      </div>
     </div>
   );
 }
@@ -24,7 +29,7 @@ AppComponent.getInitialProps = async (appContext) => {
     // fetch data applicable to THAT component
     if (appContext.Component.getInitialProps) {
       // update page props from call defined within child component
-      pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+      pageProps = await appContext.Component.getInitialProps(appContext.ctx, client, data.currentUser);
     }
 
     return {
