@@ -22,6 +22,7 @@ AppComponent.getInitialProps = async (appContext) => {
   // nextjs when using getInitialProps at the app component level
   // use Component.getInitalProps and pass data to children
   let pageProps = {};
+
   try {
     // fetch common data applicable to ALL pages in the application
     const { data } = await client.get('/api/users/current-user');
@@ -37,7 +38,7 @@ AppComponent.getInitialProps = async (appContext) => {
       currentUser: data.currentUser,
     };
   } catch (e) {
-    return { error: e.message }
+    return { error: e.message };
   }
 }
 

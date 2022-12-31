@@ -31,7 +31,6 @@ const startUp = async () => {
 
     new OrderCreatedListener(natsWrapper.client).listen();
   } catch (e) {
-    console.log('error: ', e)
     throw new DatabaseConnectionError();
   }
 }
