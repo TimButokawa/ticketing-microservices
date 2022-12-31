@@ -3,4 +3,7 @@ module.exports = {
     config.watchOptions.poll = 300;
     return config;
   },
+  publicRuntimeConfig: {
+    BASE_URL: process.env.BASE_URL
+  }
 };

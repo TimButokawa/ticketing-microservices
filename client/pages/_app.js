@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'; // setup global css
 import buildClient from '../api/build-client';
 import Header from '../components/header';
-import Protected from '../components/protected';
 
 // App component next js wrapper
 const AppComponent = ({ Component, pageProps, currentUser }) => {
@@ -9,9 +8,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
     <div>
       <Header currentUser={currentUser} />
       <div className="container">
-        <Protected currentUser={currentUser}>
-          <Component {...pageProps} currentUser={currentUser} />
-        </Protected>
+        <Component {...pageProps} currentUser={currentUser} />
       </div>
     </div>
   );
