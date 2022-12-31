@@ -19,5 +19,5 @@ describe('current-user route...', () => {
       .expect(200)
 
     expect(res.body.currentUser).toEqual(null);
-  })
+  });
 });
