@@ -46,7 +46,6 @@ const startUp = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to auth db');
   } catch (e) {
-    console.log('error: ', e)
     throw new DatabaseConnectionError();
   }
 
