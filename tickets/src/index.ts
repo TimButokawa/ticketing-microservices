@@ -32,6 +32,7 @@ const startUp = async () => {
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URL
     );
+
     natsWrapper.client.on('close', () => {
       console.log('NATS connection closing...');
       process.exit();
@@ -50,7 +51,7 @@ const startUp = async () => {
   }
 
   app.listen(3000, () => {
-    console.log('Auth listening on port 3000');
+    console.log('Tickets listening on port 3000');
   });
 }
 
